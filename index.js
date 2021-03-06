@@ -1,1 +1,1 @@
-import "./lib/htmlx";
+import "./lib/htmlx/htmlx.test.js";
