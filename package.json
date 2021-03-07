@@ -18,8 +18,16 @@
     "url": "https://github.com/kottans/framework-2021/issues"
   },
   "homepage": "https://github.com/kottans/framework-2021#readme",
-  "dependencies": {},
+  "dependencies": {
+    "src": "^1.1.2"
+  },
   "devDependencies": {
+    "@babel/cli": "^7.13.0",
+    "@babel/core": "^7.13.8",
+    "@babel/plugin-syntax-jsx": "^7.12.13",
+    "@babel/plugin-transform-react-jsx": "^7.12.17",
+    "@babel/preset-env": "^7.13.9",
+    "babel-preset-env": "^1.7.0",
     "eslint": "^7.20.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.3.1",
@@ -27,6 +35,28 @@
     "lint-staged": "^10.5.4",
     "parcel-bundler": "^1.12.4",
     "prettier": "^2.2.1"
+  },
+  "babel": {
+    "plugins": [
+      [
+        "@babel/plugin-transform-react-jsx",
+        {
+          "pragma": "createElement",
+          "pragmaFRag": "createFragment",
+          "throwIfNamespace": "true"
+        }
+      ]
+    ],
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ]
+    ]
   },
   "husky": {
     "hooks": {
