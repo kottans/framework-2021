@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.html",
   "scripts": {
-    "start": "parcel watch ./index.html",
-    "build": "parcel build ./index.html"
+    "start": "parcel ./index.html",
+    "prebuild": "shx rm -rf dist/*",
+    "build": "parcel build ./index.html --public-url ./",
+    "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
   },
   "repository": {
     "type": "git",
@@ -26,7 +28,9 @@
     "husky": "^5.0.9",
     "lint-staged": "^10.5.4",
     "parcel-bundler": "^1.12.4",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "push-dir": "^0.4.1",
+    "shx": "^0.3.3"
   },
   "husky": {
     "hooks": {
