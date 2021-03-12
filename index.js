@@ -10,6 +10,13 @@ window.dataStore = window.dataStore || {
   currentUnits: CELSIUS_UNITS,
 };
 
+window.renderApp = renderApp;
+
+const setCurrentUnits = function(value) {
+  window.dataStore.currentUnits = value;
+  window.renderApp();
+}
+
 renderApp();
 
 function renderApp() {
@@ -18,17 +25,15 @@ function renderApp() {
     `;
 }
 
-window.renderApp = renderApp;
-
 function App() {
   return `<div>
  ${SearchByCity()}
- ${UnitSwitch()}
+ ${UnitSwitch(window.dataStore.currentUnits, setCurrentUnits)}
  ${WeatherToday()}
 </div>`;
 }
 
-function UnitSwitch() {
+function UnitSwitch(currentUnits, setCurrentUnitsCB) {
   return `
     <p>Select units</p>
   ${[
@@ -42,8 +47,8 @@ function UnitSwitch() {
               id="${id}"
               name="temperature-units" 
               value="${value}" 
-              ${window.dataStore.currentUnits === value ? ' checked ' : ''} 
-              onchange="window.dataStore.currentUnits = this.value; window.renderApp();"
+              ${currentUnits === value ? ' checked ' : ''} 
+              onchange="(${setCurrentUnitsCB})(this.value);"
           >
             <label for="${id}">${name}</label>
         </div>`
