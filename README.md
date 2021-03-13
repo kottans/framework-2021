@@ -23,7 +23,7 @@ Out of scope:
 
 `npm install` to install dependencies.
 
-`npm run start` to launch dev server, app would be served at http://localhost:1234/
+`npm start` to launch dev server, app would be served at http://localhost:1234/
 
 `npm run build` to build production distribution package
 
