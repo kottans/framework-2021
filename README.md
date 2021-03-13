@@ -4,8 +4,8 @@ A gradual FE JS framework development.
 
 ## End game
 
-Have a weather app as a practical implementation
-of a web app backed with a basic FE framework.
+Have a web app as a practical implementation
+of an application backed with a basic FE framework.
 
 Framework features:
 - components with props
