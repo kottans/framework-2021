@@ -2,11 +2,11 @@
   "name": "frontend-2021-framework",
   "version": "1.0.0",
   "description": "",
-  "main": "index.html",
+  "main": "src/index.html",
   "scripts": {
-    "start": "parcel ./index.html",
+    "start": "parcel src/index.html",
     "prebuild": "shx rm -rf dist/*",
-    "build": "parcel build ./index.html --public-url ./",
+    "build": "parcel build src/index.html --public-url ./",
     "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
   },
   "repository": {

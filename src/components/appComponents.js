@@ -1,37 +1,5 @@
-import { currentWeather } from './fixtures';
-import { CELSIUS_UNITS, displayInUnits, FAHRENHEIT_UNITS } from './utils';
-
-if (module.hot) {
-  module.hot.accept();
-}
-
-window.dataStore = window.dataStore || {
-  currentCity: '',
-  currentUnits: CELSIUS_UNITS,
-};
-
-window.renderApp = renderApp;
-
-const setCurrentUnits = function(value) {
-  window.dataStore.currentUnits = value;
-  window.renderApp();
-}
-
-renderApp();
-
-function renderApp() {
-  document.getElementById('app-root').innerHTML = `
-        ${App()}
-    `;
-}
-
-function App() {
-  return `<div>
- ${SearchByCity()}
- ${UnitSwitch(window.dataStore.currentUnits, setCurrentUnits)}
- ${WeatherToday()}
-</div>`;
-}
+import { CELSIUS_UNITS, displayInUnits, FAHRENHEIT_UNITS } from "../utils";
+import { currentWeather } from "./fixtures";
 
 function UnitSwitch(currentUnits, setCurrentUnitsCB) {
   return `
@@ -40,8 +8,8 @@ function UnitSwitch(currentUnits, setCurrentUnitsCB) {
     { id: 'celsius-units', value: CELSIUS_UNITS, name: 'C' },
     { id: 'fahrenheit-units', value: FAHRENHEIT_UNITS, name: 'F' },
   ].map(
-      ({ id, value, name }) =>
-        `<div>
+    ({ id, value, name }) =>
+      `<div>
           <input 
               type="radio" 
               id="${id}"
@@ -52,7 +20,7 @@ function UnitSwitch(currentUnits, setCurrentUnitsCB) {
           >
             <label for="${id}">${name}</label>
         </div>`
-    )
+  )
     .join('')}
 `;
 }
@@ -81,3 +49,5 @@ function WeatherToday() {
 
   return `Enter one of the city names: ${Object.keys(currentWeather).join(', ')}.`;
 }
+
+export { UnitSwitch, SearchByCity, WeatherToday };
