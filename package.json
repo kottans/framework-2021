@@ -22,18 +22,18 @@
     "src": "^1.1.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.13.0",
-    "@babel/core": "^7.13.8",
+    "@babel/cli": "^7.13.10",
+    "@babel/core": "^7.13.10",
     "@babel/plugin-syntax-jsx": "^7.12.13",
     "@babel/plugin-transform-react-jsx": "^7.12.17",
-    "@babel/preset-env": "^7.13.9",
+    "@babel/preset-env": "^7.13.10",
     "babel-preset-env": "^1.7.0",
-    "eslint": "^7.20.0",
+    "eslint": "^7.22.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.3.1",
     "husky": "^5.0.9",
     "lint-staged": "^10.5.4",
-    "parcel-bundler": "^1.12.4",
+    "parcel-bundler": "^1.12.5",
     "prettier": "^2.2.1"
   },
   "babel": {

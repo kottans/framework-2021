@@ -1,12 +1,26 @@
-/** @jsx createElement */
-/*** @jsxFrag createFragment */
-import { createElement, createFragment } from "./src/framework/element";
-import App from "./src/components/App";
+/* @jsx createElement */
+/* @jsxFrag createFragment */
+import { createElement, createFragment, render } from './src/framework';
+import Texture from './src/components/App';
+import Counter from './src/components/Counter';
 
-const onClick = () => { console.log("I am clicked! Means, I'm loved!"); };
-const subTitle = "A JSX based app";
+const onClick = () => {
+  console.log("I am clicked! Means, I'm loved!");
+};
+const subTitle = 'A JSX based app';
 
-setTimeout(() =>
-  document.getElementById("app-root")
-    .replaceWith(<App title="Application" subTitle={subTitle} onClick={onClick} onInput={() => console.log("input!")}  />)
-  , 300);
+const container = document.getElementById('app-root');
+
+const App = () => (
+  <>
+    <Texture
+      title="Application"
+      subTitle={subTitle}
+      onClick={onClick}
+      onInput={() => console.log('input!')}
+    />
+    <Counter />
+  </>
+);
+
+render(App, container);
