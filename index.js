@@ -144,7 +144,11 @@ function SearchByCity() {
     <input
         type="text"
         value="${window.dataStore.currentCity}"
-        onchange="window.dataStore.currentCity = this.value; window.dataStore.error = null; window.dataStore.isDataLoading = true; window.reRenderApp();" 
+        onchange="
+            window.dataStore.currentCity = this.value; 
+            window.dataStore.error = null; 
+            window.dataStore.isDataLoading = true; 
+            window.reRenderApp();"
     />
 `;
 }
@@ -178,15 +182,15 @@ function WeatherForecast() {
   let content = '';
   if (weatherData) {
     content += `Weather forecast for ${currentCity}:`;
-    const { daily } = weatherData;
-    content += daily
-      .slice(1)
+    const { daily: [, ...forecastData] } = weatherData;
+    content += forecastData
       .map(({ dt, temp: { day, night }, weather: [{ main, description, icon }] }) => {
         const dateString = getDateFromUnixTimestamp(dt);
         const dayTempInUnits = displayInUnits(day, currentUnits);
         const nightTempInUnits = displayInUnits(night, currentUnits);
         const weatherIcon = getIconFromCode(icon);
-        return `<div>For ${dateString}, ${weatherIcon} ${main} (${description}). Day at ${dayTempInUnits}, night at ${nightTempInUnits}</div>`;
+        return `<div>For ${dateString}, ${weatherIcon} ${main} (${description}).&nbsp;
+Day at ${dayTempInUnits}, night at ${nightTempInUnits}</div>`;
       })
       .join('');
   }
