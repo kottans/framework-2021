@@ -60,7 +60,7 @@ function UnitSwitch(currentUnits, setCurrentUnitsCB) {
               ${currentUnits === value ? ' checked ' : ''} 
               onchange="(${setCurrentUnitsCB})(this.value);"
           >
-            <label for="${id}">${name}</label>
+            <label for="${id}">˚${name}</label>
         </div>`,
     )
     .join('')}
@@ -86,7 +86,7 @@ function SearchByCity() {
 
 function WeatherToday() {
   const {currentCity, currentUnits} = window.dataStore;
-  let weatherData = cityByWeather[currentCity];
+  const weatherData = cityByWeather[currentCity];
   let content = '';
 
   if (weatherData) {
@@ -109,7 +109,7 @@ function WeatherToday() {
 
 function WeatherForecast() {
   const {currentCity, currentUnits} = window.dataStore;
-  let weatherData = cityByWeather[currentCity];
+  const weatherData = cityByWeather[currentCity];
   let content = '';
   if (weatherData) {
     content += `Weather forecast for ${currentCity}:`;
