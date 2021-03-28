@@ -13,3 +13,11 @@ export function displayInUnits(value, units) {
       return `${value}˚K`;
   }
 }
+
+export function getDateFromUnixTimestamp(dt) {
+  return new Date(dt * 1000).toLocaleDateString();
+}
+
+export function getIconFromCode(iconCode) {
+  return `<img src="http://openweathermap.org/img/wn/${iconCode}@2x.png" width="30px" height="30px" alt="weather icon">`;
+}
