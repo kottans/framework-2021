@@ -1,10 +1,10 @@
-import { cityByWeather } from './fixtures';
 import {
+  allowedCities,
   CELSIUS_UNITS,
   displayInUnits,
   FAHRENHEIT_UNITS,
   getDateFromUnixTimestamp,
-  getIconFromCode,
+  getIconFromCode, getOpenWeatherMapUrl,
 } from './utils';
 
 if (module.hot) {
@@ -13,17 +13,64 @@ if (module.hot) {
 
 window.dataStore = window.dataStore || {
   currentCity: '',
+  isDataLoading: false,
+  error: null,
+  cityByWeather: {},
   currentUnits: CELSIUS_UNITS,
 };
 
 window.renderApp = renderApp;
+window.loadData = loadData;
+window.reRenderApp = reRenderApp;
 
-const setCurrentUnits = function (value) {
+function setCurrentUnits(value) {
   window.dataStore.currentUnits = value;
-  window.renderApp();
-};
+  reRenderApp();
+}
+
+function setCurrentCityData(data) {
+  const {currentCity} = window.dataStore;
+  window.dataStore.cityByWeather[currentCity] = data;
+  reRenderApp();
+}
+
+function getCurrentCityData() {
+  const {currentCity, cityByWeather} = window.dataStore;
+  return cityByWeather[currentCity];
+}
+
+function isCurrentCityDataLoaded() {
+  const {currentCity, cityByWeather} = window.dataStore;
+  return cityByWeather.hasOwnProperty(currentCity);
+}
 
 renderApp();
+
+function reRenderApp() {
+  // Need to split rendering cycles
+  setTimeout(() => window.renderApp(), 0);
+}
+
+
+function loadData() {
+  const {currentCity} = window.dataStore;
+
+  if (!allowedCities.includes(currentCity)) {
+    window.dataStore.isDataLoading = false;
+    window.dataStore.error = `Enter one of the city names: ${allowedCities.join(', ')}.`
+    reRenderApp();
+    return;
+  }
+
+  if (!isCurrentCityDataLoaded()) {
+    const url = getOpenWeatherMapUrl(currentCity);
+    fetch(url).then(response => response.json()).then(data => {
+      window.dataStore.isDataLoading = false;
+      window.dataStore.error = null;
+      setCurrentCityData(data);
+    });
+  }
+}
 
 function renderApp() {
   document.getElementById('app-root').innerHTML = `
@@ -33,13 +80,38 @@ function renderApp() {
 
 function App() {
   return `<div>
- ${SearchByCity()}
- ${UnitSwitch(window.dataStore.currentUnits, setCurrentUnits)}
- <br/> 
- ${WeatherToday()}
- <br/>
- ${WeatherForecast()}
-</div>`;
+   ${SearchByCity()}
+   ${WeatherResults()}
+  </div>`;
+}
+
+function WeatherResults() {
+  const {isDataLoading, currentUnits, error, currentCity} = window.dataStore;
+  let content = '';
+  if (currentCity === '') {
+    content = 'Search by city name';
+  } else {
+    if (isDataLoading) {
+      content = 'Loading...';
+      window.loadData();
+    }
+
+    if (error !== null) {
+      content = error;
+    }
+
+    if (isCurrentCityDataLoaded()) {
+      content = `
+       ${UnitSwitch(currentUnits, setCurrentUnits)}
+       <br/>
+       ${WeatherToday()}
+       <br/>
+       ${WeatherForecast()}
+    `;
+    }
+  }
+
+  return `<p>${content}</p>`;
 }
 
 function UnitSwitch(currentUnits, setCurrentUnitsCB) {
@@ -68,21 +140,18 @@ function UnitSwitch(currentUnits, setCurrentUnitsCB) {
 }
 
 function SearchByCity() {
-  const weatherData = cityByWeather[window.dataStore.currentCity];
-
   return `
     <input
         type="text"
         value="${window.dataStore.currentCity}"
-        onchange="window.dataStore.currentCity = this.value; window.renderApp();" 
+        onchange="window.dataStore.currentCity = this.value; window.dataStore.error = null; window.dataStore.isDataLoading = true; window.reRenderApp();" 
     />
-    ${!weatherData ? `Enter one of the city names: ${Object.keys(cityByWeather).join(', ')}.` : ''}
 `;
 }
 
 function WeatherToday() {
   const { currentCity, currentUnits } = window.dataStore;
-  const weatherData = cityByWeather[currentCity];
+  const weatherData = getCurrentCityData();
   let content = '';
 
   if (weatherData) {
@@ -105,7 +174,7 @@ function WeatherToday() {
 
 function WeatherForecast() {
   const { currentCity, currentUnits } = window.dataStore;
-  const weatherData = cityByWeather[currentCity];
+  const weatherData = getCurrentCityData();
   let content = '';
   if (weatherData) {
     content += `Weather forecast for ${currentCity}:`;
