@@ -43,8 +43,8 @@ export const cityCoordinates = {
 
 export const allowedCities = Object.keys(cityCoordinates);
 
-// WARNING: JUST FOR SIMPLIFICATION! DON'T STORE SUCH KEYS IN REAL APPS!!!!
-const OPEN_WEATHER_MAP_API_KEY = 'fa2fa824529f80b43a9da3da15f367ae';
+// Put your API key here:
+const OPEN_WEATHER_MAP_API_KEY = '';
 
 export function getOpenWeatherMapUrl(cityName) {
   const { lat, lon } = cityCoordinates[cityName];
