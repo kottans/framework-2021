@@ -4,6 +4,9 @@
 DS_Store?
 .vscode/
 
+## Chores
+.eslintcache
+
 ## Building
 node_modules/
 dist/

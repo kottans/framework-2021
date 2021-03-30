@@ -1,1 +1,1 @@
-console.log('Start from here');
+// Start from here
