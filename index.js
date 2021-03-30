@@ -4,7 +4,8 @@ import {
   displayInUnits,
   FAHRENHEIT_UNITS,
   getDateFromUnixTimestamp,
-  getIconFromCode, getOpenWeatherMapUrl,
+  getIconFromCode,
+  getOpenWeatherMapUrl,
 } from './utils';
 
 if (module.hot) {
@@ -29,18 +30,18 @@ function setCurrentUnits(value) {
 }
 
 function setCurrentCityData(data) {
-  const {currentCity} = window.dataStore;
+  const { currentCity } = window.dataStore;
   window.dataStore.cityByWeather[currentCity] = data;
   reRenderApp();
 }
 
 function getCurrentCityData() {
-  const {currentCity, cityByWeather} = window.dataStore;
+  const { currentCity, cityByWeather } = window.dataStore;
   return cityByWeather[currentCity];
 }
 
 function isCurrentCityDataLoaded() {
-  const {currentCity, cityByWeather} = window.dataStore;
+  const { currentCity, cityByWeather } = window.dataStore;
   return cityByWeather.hasOwnProperty(currentCity);
 }
 
@@ -51,24 +52,25 @@ function reRenderApp() {
   setTimeout(() => window.renderApp(), 0);
 }
 
-
 function loadData() {
-  const {currentCity} = window.dataStore;
+  const { currentCity } = window.dataStore;
 
   if (!allowedCities.includes(currentCity)) {
     window.dataStore.isDataLoading = false;
-    window.dataStore.error = `Enter one of the city names: ${allowedCities.join(', ')}.`
+    window.dataStore.error = `Enter one of the city names: ${allowedCities.join(', ')}.`;
     reRenderApp();
     return;
   }
 
   if (!isCurrentCityDataLoaded()) {
     const url = getOpenWeatherMapUrl(currentCity);
-    fetch(url).then(response => response.json()).then(data => {
-      window.dataStore.isDataLoading = false;
-      window.dataStore.error = null;
-      setCurrentCityData(data);
-    });
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        window.dataStore.isDataLoading = false;
+        window.dataStore.error = null;
+        setCurrentCityData(data);
+      });
   }
 }
 
@@ -86,7 +88,7 @@ function App() {
 }
 
 function WeatherResults() {
-  const {isDataLoading, currentUnits, error, currentCity} = window.dataStore;
+  const { isDataLoading, currentUnits, error, currentCity } = window.dataStore;
   let content = '';
   if (currentCity === '') {
     content = 'Search by city name';
@@ -182,7 +184,9 @@ function WeatherForecast() {
   let content = '';
   if (weatherData) {
     content += `Weather forecast for ${currentCity}:`;
-    const { daily: [, ...forecastData] } = weatherData;
+    const {
+      daily: [, ...forecastData],
+    } = weatherData;
     content += forecastData
       .map(({ dt, temp: { day, night }, weather: [{ main, description, icon }] }) => {
         const dateString = getDateFromUnixTimestamp(dt);

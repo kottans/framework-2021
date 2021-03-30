@@ -1,3 +1,5 @@
+import { OPEN_WEATHER_MAP_API_KEY } from './secrets';
+
 export const KELVIN_UNITS = 'K';
 export const CELSIUS_UNITS = 'C';
 export const FAHRENHEIT_UNITS = 'F';
@@ -42,9 +44,6 @@ export const cityCoordinates = {
 };
 
 export const allowedCities = Object.keys(cityCoordinates);
-
-// Put your API key here:
-const OPEN_WEATHER_MAP_API_KEY = '';
 
 export function getOpenWeatherMapUrl(cityName) {
   const { lat, lon } = cityCoordinates[cityName];
