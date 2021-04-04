@@ -21,18 +21,29 @@ window.dataStore = window.dataStore || {
 };
 
 window.renderApp = renderApp;
-window.loadData = loadData;
+window.validateAndLoadData = validateAndLoadData;
 window.reRenderApp = reRenderApp;
+window.performSearch = performSearch;
+
+renderApp();
+
+function performSearch(cityName) {
+  window.dataStore.currentCity = cityName;
+  window.dataStore.error = null;
+  window.dataStore.isDataLoading = true;
+  window.reRenderApp();
+  window.validateAndLoadData();
+}
 
 function setCurrentUnits(value) {
   window.dataStore.currentUnits = value;
-  reRenderApp();
+  window.reRenderApp();
 }
 
 function setCurrentCityData(data) {
   const { currentCity } = window.dataStore;
   window.dataStore.cityByWeather[currentCity] = data;
-  reRenderApp();
+  window.reRenderApp();
 }
 
 function getCurrentCityData() {
@@ -45,21 +56,18 @@ function isCurrentCityDataLoaded() {
   return cityByWeather.hasOwnProperty(currentCity);
 }
 
-renderApp();
-
 function reRenderApp() {
   // Need to split rendering cycles
-  setTimeout(() => window.renderApp(), 0);
+  setTimeout(window.renderApp, 0);
 }
 
-function loadData() {
+function validateAndLoadData() {
   const { currentCity } = window.dataStore;
 
   if (!allowedCities.includes(currentCity)) {
     window.dataStore.isDataLoading = false;
     window.dataStore.error = `Enter one of the city names: ${allowedCities.join(', ')}.`;
-    reRenderApp();
-    return;
+    window.reRenderApp();
   }
 
   if (!isCurrentCityDataLoaded()) {
@@ -95,7 +103,6 @@ function WeatherResults() {
   } else {
     if (isDataLoading) {
       content = 'Loading...';
-      window.loadData();
     }
 
     if (error !== null) {
@@ -146,11 +153,7 @@ function SearchByCity() {
     <input
         type="text"
         value="${window.dataStore.currentCity}"
-        onchange="
-            window.dataStore.currentCity = this.value; 
-            window.dataStore.error = null; 
-            window.dataStore.isDataLoading = true; 
-            window.reRenderApp();"
+        onchange="window.performSearch(this.value)"
     />
 `;
 }
@@ -182,22 +185,49 @@ function WeatherForecast() {
   const { currentCity, currentUnits } = window.dataStore;
   const weatherData = getCurrentCityData();
   let content = '';
+
+  function getPreparedForecastData({
+    dt,
+    temp: { day, night },
+    weather: [{ main, description, icon }],
+  }) {
+    const dateString = getDateFromUnixTimestamp(dt);
+    const dayTempInUnits = displayInUnits(day, currentUnits);
+    const nightTempInUnits = displayInUnits(night, currentUnits);
+    const weatherIcon = getIconFromCode(icon);
+
+    return {
+      dateString,
+      dayTempInUnits,
+      description,
+      main,
+      nightTempInUnits,
+      weatherIcon,
+    };
+  }
+
   if (weatherData) {
-    content += `Weather forecast for ${currentCity}:`;
+    content += `<div>Weather forecast for ${currentCity}:</div>`;
     const {
       daily: [, ...forecastData],
     } = weatherData;
-    content += forecastData
-      .map(({ dt, temp: { day, night }, weather: [{ main, description, icon }] }) => {
-        const dateString = getDateFromUnixTimestamp(dt);
-        const dayTempInUnits = displayInUnits(day, currentUnits);
-        const nightTempInUnits = displayInUnits(night, currentUnits);
-        const weatherIcon = getIconFromCode(icon);
-        return `<div>For ${dateString}, ${weatherIcon} ${main} (${description}).&nbsp;
-Day at ${dayTempInUnits}, night at ${nightTempInUnits}</div>`;
-      })
-      .join('');
+    const forecastItems = forecastData.map(forecastDataItem => {
+      const preparedForecastDataItem = getPreparedForecastData(forecastDataItem);
+      return WeatherForecastItem(preparedForecastDataItem);
+    });
+    content += forecastItems.join('');
   }
 
   return content ? `<div>${content}</div>` : '';
+}
+
+function WeatherForecastItem({
+  dateString,
+  dayTempInUnits,
+  description,
+  main,
+  nightTempInUnits,
+  weatherIcon,
+}) {
+  return `<div>For ${dateString}, ${weatherIcon} ${main} (${description}). Day at ${dayTempInUnits}, night at ${nightTempInUnits}</div>`;
 }
