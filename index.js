@@ -22,7 +22,6 @@ window.dataStore = window.dataStore || {
 
 window.renderApp = renderApp;
 window.validateAndLoadData = validateAndLoadData;
-window.reRenderApp = reRenderApp;
 window.performSearch = performSearch;
 
 renderApp();
@@ -31,19 +30,27 @@ function performSearch(cityName) {
   window.dataStore.currentCity = cityName;
   window.dataStore.error = null;
   window.dataStore.isDataLoading = true;
-  window.reRenderApp();
-  window.validateAndLoadData();
+
+  window
+    .validateAndLoadData()
+    .then(({ error, data }) => {
+      window.dataStore.isDataLoading = false;
+
+      if (error) {
+        window.dataStore.error = error;
+      } else if (data) {
+        window.dataStore.cityByWeather[cityName] = data;
+      }
+    })
+    .catch(() => {
+      window.dataStore.error = 'Some error occurred.';
+    })
+    .finally(window.renderApp);
 }
 
 function setCurrentUnits(value) {
   window.dataStore.currentUnits = value;
-  window.reRenderApp();
-}
-
-function setCurrentCityData(data) {
-  const { currentCity } = window.dataStore;
-  window.dataStore.cityByWeather[currentCity] = data;
-  window.reRenderApp();
+  window.renderApp();
 }
 
 function getCurrentCityData() {
@@ -56,30 +63,23 @@ function isCurrentCityDataLoaded() {
   return cityByWeather.hasOwnProperty(currentCity);
 }
 
-function reRenderApp() {
-  // Need to split rendering cycles
-  setTimeout(window.renderApp, 0);
-}
-
 function validateAndLoadData() {
   const { currentCity } = window.dataStore;
 
   if (!allowedCities.includes(currentCity)) {
-    window.dataStore.isDataLoading = false;
-    window.dataStore.error = `Enter one of the city names: ${allowedCities.join(', ')}.`;
-    window.reRenderApp();
+    const error = `Enter one of the city names: ${allowedCities.join(', ')}.`;
+    return Promise.resolve({ error });
   }
 
   if (!isCurrentCityDataLoaded()) {
     const url = getOpenWeatherMapUrl(currentCity);
-    fetch(url)
+    return fetch(url)
       .then(response => response.json())
-      .then(data => {
-        window.dataStore.isDataLoading = false;
-        window.dataStore.error = null;
-        setCurrentCityData(data);
-      });
+      .then(data => ({ data }));
   }
+
+  // no errors and no new data loaded, app will take data from cache
+  return Promise.resolve({});
 }
 
 function renderApp() {
