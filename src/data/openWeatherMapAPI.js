@@ -26,11 +26,6 @@ export function getOpenWeatherMapUrl(cityName) {
   return `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&appid=${OPEN_WEATHER_MAP_API_KEY}`;
 }
 
-export function getIconPropertiesFromCode(iconCode) {
-  return {
-    src: `http://openweathermap.org/img/wn/${iconCode}@2x.png`,
-    width: '30px',
-    height: '30px',
-    alt: 'weather icon',
-  };
+export function getIconFromCode(iconCode) {
+  return `<img src="http://openweathermap.org/img/wn/${iconCode}@2x.png" width="30px" height="30px" alt="weather icon">`;
 }

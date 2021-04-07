@@ -1,16 +1,11 @@
-/** @jsx createElement */
-/*** @jsxFrag createFragment */
-import { createElement, createFragment } from '../framework/element';
 import SearchByCity from './SearchByCity';
 import WeatherResults from './WeatherResults';
 
 function App() {
-  return (
-    <>
-      <SearchByCity />
-      <WeatherResults />
-    </>
-  );
+  return `<div>
+   ${SearchByCity()}
+   ${WeatherResults()}
+  </div>`;
 }
 
 export default App;
