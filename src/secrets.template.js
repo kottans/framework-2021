@@ -4,5 +4,5 @@
  Make sure secrets.js is never staged/indexed.
  */
 
-// Put your OpenWeatherMap API key here:
+// Get your OpenWeatherMap API key ( https://openweathermap.org/appid ) and put it here:
 export const OPEN_WEATHER_MAP_API_KEY = '';
