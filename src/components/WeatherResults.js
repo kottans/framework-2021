@@ -1,4 +1,7 @@
-import { getIconFromCode } from '../data/openWeatherMapAPI';
+/** @jsx createElement */
+/*** @jsxFrag createFragment */
+import { createElement, createFragment } from '../framework/element';
+import { getIconPropertiesFromCode } from '../data/openWeatherMapAPI';
 import { getCurrentCityData, isCurrentCityDataLoaded } from '../data/weatherData';
 import { displayInUnits, getDateFromUnixTimestamp } from '../utils';
 import UnitSwitch from './UnitSwitch';
@@ -23,17 +26,19 @@ function WeatherResults() {
     }
 
     if (isCurrentCityDataLoaded()) {
-      content = `
-       ${UnitSwitch(currentUnits, setCurrentUnits)}
-       <br/>
-       ${WeatherToday()}
-       <br/>
-       ${WeatherForecast()}
-    `;
+      content = (
+        <>
+          <UnitSwitch currentUnits={currentUnits} setCurrentUnitsCB={setCurrentUnits} />
+          <br />
+          <WeatherToday />
+          <br />
+          <WeatherForecast />
+        </>
+      );
     }
   }
 
-  return `<p>${content}</p>`;
+  return <p>{content}</p>;
 }
 
 function WeatherToday() {
@@ -51,18 +56,26 @@ function WeatherToday() {
     } = weatherData;
     const tempInUnits = displayInUnits(temp, currentUnits);
     const dateString = getDateFromUnixTimestamp(dt);
-    const weatherIcon = getIconFromCode(icon);
-    content += `<div>Weather for ${dateString} in ${currentCity}:</div>`;
-    content += `<div>${weatherIcon} ${main} (${description}). Temperature is ${tempInUnits}</div>`;
+    const weatherIcon = getIconPropertiesFromCode(icon);
+    content = (
+      <>
+        <div>
+          Weather for {dateString} in {currentCity}:
+        </div>
+        <div>
+          <img {...weatherIcon} /> {main} ({description}). Temperature is {tempInUnits}
+        </div>
+      </>
+    );
   }
 
-  return content ? `<div>${content}</div>` : '';
+  return content ? <div>{content}</div> : '';
 }
 
 function WeatherForecast() {
   const { currentCity, currentUnits } = window.dataStore;
   const weatherData = getCurrentCityData();
-  let content = '';
+  let content = [];
 
   function getPreparedForecastData({
     dt,
@@ -72,7 +85,7 @@ function WeatherForecast() {
     const dateString = getDateFromUnixTimestamp(dt);
     const dayTempInUnits = displayInUnits(day, currentUnits);
     const nightTempInUnits = displayInUnits(night, currentUnits);
-    const weatherIcon = getIconFromCode(icon);
+    const weatherIcon = getIconPropertiesFromCode(icon);
 
     return {
       dateString,
@@ -80,12 +93,12 @@ function WeatherForecast() {
       description,
       main,
       nightTempInUnits,
-      weatherIcon,
+      weatherIcon: <img {...weatherIcon} />,
     };
   }
 
   if (weatherData) {
-    content += `<div>Weather forecast for ${currentCity}:</div>`;
+    content.push(<div>Weather forecast for {currentCity}:</div>);
     const {
       daily: [, ...forecastData],
     } = weatherData;
@@ -93,10 +106,10 @@ function WeatherForecast() {
       const preparedForecastDataItem = getPreparedForecastData(forecastDataItem);
       return WeatherForecastItem(preparedForecastDataItem);
     });
-    content += forecastItems.join('');
+    content = [...content, ...forecastItems];
   }
 
-  return content ? `<div>${content}</div>` : '';
+  return content.length ? <div>{content}</div> : '';
 }
 
 function WeatherForecastItem({
@@ -107,7 +120,12 @@ function WeatherForecastItem({
   nightTempInUnits,
   weatherIcon,
 }) {
-  return `<div>For ${dateString}, ${weatherIcon} ${main} (${description}). Day at ${dayTempInUnits}, night at ${nightTempInUnits}</div>`;
+  return (
+    <div>
+      For {dateString}, {weatherIcon} {main} ({description}). Day at {dayTempInUnits}, night at{' '}
+      {nightTempInUnits}
+    </div>
+  );
 }
 
 export default WeatherResults;
