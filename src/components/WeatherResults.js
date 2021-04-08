@@ -13,7 +13,7 @@ function setCurrentUnits(value) {
 
 function WeatherResults() {
   const { isDataLoading, currentUnits, error, currentCity } = window.dataStore;
-  let content = '';
+  let content = null;
   if (currentCity === '') {
     content = 'Search by city name';
   } else {
@@ -44,7 +44,7 @@ function WeatherResults() {
 function WeatherToday() {
   const { currentCity, currentUnits } = window.dataStore;
   const weatherData = getCurrentCityData();
-  let content = '';
+  let content = null;
 
   if (weatherData) {
     const {
@@ -58,24 +58,24 @@ function WeatherToday() {
     const dateString = getDateFromUnixTimestamp(dt);
     const weatherIcon = getIconPropertiesFromCode(icon);
     content = (
-      <>
+      <div>
         <div>
           Weather for {dateString} in {currentCity}:
         </div>
         <div>
           <img {...weatherIcon} /> {main} ({description}). Temperature is {tempInUnits}
         </div>
-      </>
+      </div>
     );
   }
 
-  return content ? <div>{content}</div> : '';
+  return content;
 }
 
 function WeatherForecast() {
   const { currentCity, currentUnits } = window.dataStore;
   const weatherData = getCurrentCityData();
-  let content = [];
+  let content = null;
 
   function getPreparedForecastData({
     dt,
@@ -98,7 +98,6 @@ function WeatherForecast() {
   }
 
   if (weatherData) {
-    content.push(<div>Weather forecast for {currentCity}:</div>);
     const {
       daily: [, ...forecastData],
     } = weatherData;
@@ -106,10 +105,15 @@ function WeatherForecast() {
       const preparedForecastDataItem = getPreparedForecastData(forecastDataItem);
       return WeatherForecastItem(preparedForecastDataItem);
     });
-    content = [...content, ...forecastItems];
+    content = (
+      <div>
+        <div>Weather forecast for {currentCity}:</div>
+        {forecastItems}
+      </div>
+    );
   }
 
-  return content.length ? <div>{content}</div> : '';
+  return content;
 }
 
 function WeatherForecastItem({

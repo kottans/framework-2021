@@ -6,7 +6,9 @@
  * @returns {DocumentFragment|Element}
  */
 export const createElement = (tag, props, ...children) => {
-  if (typeof tag === 'function') return tag({ ...props, children }, children);
+  if (typeof tag === 'function') {
+    return tag({ ...props, children }, children);
+  }
   const element = tag === '' ? new DocumentFragment() : document.createElement(tag);
   Object.entries(props || {}).forEach(([name, value]) => {
     if (name.startsWith('on') && name.toLowerCase() in window) {
