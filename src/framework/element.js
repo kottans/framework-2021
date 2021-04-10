@@ -1,13 +1,17 @@
 /**
  * Creates DOM Node. Implements jsx-parser's createElement API
- * @param tag - HTML tag as string or Component function
- * @param props - element properties as parsed by jsx-parser
- * @param children - child elements
+ * @param {string|Function} tag - HTML tag as string or Component function
+ * @param {object} props - element properties as parsed by jsx-parser
+ * @param {Node[]} children - child elements
  * @returns {DocumentFragment|Element}
  */
 export const createElement = (tag, props, ...children) => {
   if (typeof tag === 'function') {
-    return tag({ ...props, children }, children);
+    /*
+      Passing children as the 2nd argument is required as jsx transformer puts component functions
+      and regular tags in wrapper functions that expect children as the 2nd param
+     */
+    return tag({ ...props, children });
   }
   const element = tag === '' ? new DocumentFragment() : document.createElement(tag);
   Object.entries(props || {}).forEach(([name, value]) => {
@@ -34,28 +38,31 @@ export const createElement = (tag, props, ...children) => {
     }
   });
 
-  children.filter(child => child).forEach(child => appendChild(element, child));
+  children.forEach(child => appendChild(element, child));
 
   return element;
 };
 
 /**
  * Appends child elements from an unbound array of children, recursively
- * @param parent
- * @param child
+ * @param {Node} parent
+ * @param {Node|[Node]} child
  */
 const appendChild = (parent, child) => {
   if (Array.isArray(child)) {
     child.forEach(subChild => appendChild(parent, subChild));
   } else {
-    parent.appendChild(child.nodeType ? child : document.createTextNode(child.toString()));
+    // Skip null and undefined
+    if (child != null) {
+      parent.appendChild(child.nodeType ? child : document.createTextNode(child.toString()));
+    }
   }
 };
 
 /**
  * Creates Fragment. Implements jsx-parser's createFragment API
- * @param props - effectively a placeholder, fragment never has any properties
- * @param children - child elements
+ * @param {object} props - effectively a placeholder, fragment never has any properties
+ * @param {Node[]} children - child elements
  * @returns {DocumentFragment}
  */
 export const createFragment = (props, ...children) => createElement('', props, ...children);
