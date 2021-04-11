@@ -5,13 +5,21 @@
  * @param {Node[]} children - child elements
  * @returns {DocumentFragment|Element}
  */
+/** @jsx createElement */
+/*** @jsxFrag createFragment */
+import { createFunctionComponent, current } from './hooks';
+
+let intervalID;
+const RERENDER_FREQUENCY = 300;
+
 export const createElement = (tag, props, ...children) => {
+  current.shouldReRender = false;
   if (typeof tag === 'function') {
     /*
       Passing children as the 2nd argument is required as jsx transformer puts component functions
       and regular tags in wrapper functions that expect children as the 2nd param
      */
-    return tag({ ...props, children }, children);
+    return createFunctionComponent(tag, props, children);
   }
   const element = tag === '' ? new DocumentFragment() : document.createElement(tag);
   Object.entries(props || {}).forEach(([name, value]) => {
@@ -43,6 +51,14 @@ export const createElement = (tag, props, ...children) => {
   return element;
 };
 
+export function render(Element, container) {
+  intervalID = setInterval(() => {
+    if (current.shouldReRender) {
+      container.replaceChildren(<Element />);
+    }
+  }, RERENDER_FREQUENCY);
+}
+
 /**
  * Appends child elements from an unbound array of children, recursively
  * @param {Node} parent
@@ -66,3 +82,5 @@ const appendChild = (parent, child) => {
  * @returns {DocumentFragment}
  */
 export const createFragment = (props, ...children) => createElement('', props, ...children);
+
+window.onbeforeunload = () => clearInterval(intervalID);

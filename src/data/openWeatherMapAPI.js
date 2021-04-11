@@ -1,4 +1,4 @@
-import { OPEN_WEATHER_MAP_API_KEY } from '../secrets';
+import { OPEN_WEATHER_MAP_API_KEY } from '../secrets.template';
 
 export const cityCoordinates = {
   London: {
