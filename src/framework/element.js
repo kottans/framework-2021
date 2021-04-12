@@ -11,7 +11,7 @@ export const createElement = (tag, props, ...children) => {
       Passing children as the 2nd argument is required as jsx transformer puts component functions
       and regular tags in wrapper functions that expect children as the 2nd param
      */
-    return tag({ ...props, children });
+    return tag({ ...props, children }, children);
   }
   const element = tag === '' ? new DocumentFragment() : document.createElement(tag);
   Object.entries(props || {}).forEach(([name, value]) => {
