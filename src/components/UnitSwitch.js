@@ -2,6 +2,7 @@
 /*** @jsxFrag createFragment */
 import { createElement, createFragment } from '../framework/element';
 import { CELSIUS_UNITS, FAHRENHEIT_UNITS } from '../utils';
+import styles from './UnitSwitch.css';
 
 function UnitSwitch({ currentUnits, setCurrentUnitsCB }) {
   return (
@@ -11,7 +12,7 @@ function UnitSwitch({ currentUnits, setCurrentUnitsCB }) {
         { id: 'celsius-units', value: CELSIUS_UNITS, name: 'C' },
         { id: 'fahrenheit-units', value: FAHRENHEIT_UNITS, name: 'F' },
       ].map(({ id, value, name }) => (
-        <div>
+        <div class={styles.std}>
           <input
             type="radio"
             id={id}
