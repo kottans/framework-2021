@@ -8,13 +8,12 @@
 /** @jsx createElement */
 /*** @jsxFrag createFragment */
 import { createFunctionComponent, current } from './hooks';
-
-let intervalID;
-const RERENDER_FREQUENCY = 300;
+import { isFunction } from '../utils';
 
 export const createElement = (tag, props, ...children) => {
   current.shouldReRender = false;
-  if (typeof tag === 'function') {
+
+  if (isFunction(tag)) {
     /*
       Passing children as the 2nd argument is required as jsx transformer puts component functions
       and regular tags in wrapper functions that expect children as the 2nd param
@@ -51,14 +50,6 @@ export const createElement = (tag, props, ...children) => {
   return element;
 };
 
-export function render(Element, container) {
-  intervalID = setInterval(() => {
-    if (current.shouldReRender) {
-      container.replaceChildren(<Element />);
-    }
-  }, RERENDER_FREQUENCY);
-}
-
 /**
  * Appends child elements from an unbound array of children, recursively
  * @param {Node} parent
@@ -82,5 +73,3 @@ const appendChild = (parent, child) => {
  * @returns {DocumentFragment}
  */
 export const createFragment = (props, ...children) => createElement('', props, ...children);
-
-window.onbeforeunload = () => clearInterval(intervalID);

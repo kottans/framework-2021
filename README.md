@@ -29,13 +29,10 @@ Out of scope:
 │   ├── App.js                -- root app component
 │   ├── SearchByCity.js       -- search by city name component
 │   ├── UnitSwitch.js         -- measuring units switch
+│   ├── WeatherForecast.js    -- weather search forecast days list components
+│   ├── WeatherForecastItem.js-- weather search forecast day component
+│   ├── WeatherToday.js       -- weather search forecast for carrent day component
 │   └── WeatherResults.js     -- weather search results visualization components
-├── data                   -- app data
-│   ├── dataStore.js          -- app data store
-│   ├── openWeatherMapAPI.js  -- OpenWeatherMap API wrappers
-│   └── weatherData.js        -- app data specific to weather
-├── framework              -- app UI handling methods
-│   └── render.js             -- UI rendering methods
 ├── index.html             -- app web presentation root document
 ├── index.js               -- bootstrapping code and app entry point
 ├── [ secrets.js ]         -- app secrets (required, yet not tracked by git)

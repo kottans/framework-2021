@@ -1,3 +1,5 @@
+import { isFunction } from '../utils';
+
 export const current = {
   shouldReRender: true,
   current: null,
@@ -23,7 +25,7 @@ export function useState(initial) {
   const actions = oldHook ? oldHook.queue : [];
 
   actions.forEach(action => {
-    hook.state = action(hook.state);
+    hook.state = isFunction(action) ? action(hook.state) : action;
   });
 
   const setState = action => {
@@ -50,17 +52,16 @@ export function useEffect(effect, deps) {
 
   current.hookIndex++;
 
-  if (hasChanged) {
-    setTimeout(() => {
-      if (oldHook && oldHook.unmount) {
-        oldHook.unmount();
-        window.removeEventListener('beforeunload', oldHook.unmount);
-      }
-      wipFiber.hooks[hookIndex].unmount = effect();
+  if (!hasChanged) return;
 
-      window.addEventListener('beforeunload', wipFiber.hooks[hookIndex].unmount);
-    });
+  if (oldHook && oldHook.unmount) {
+    oldHook.unmount();
+    window.removeEventListener('beforeunload', oldHook.unmount);
   }
+
+  wipFiber.hooks[hookIndex].unmount = effect();
+
+  window.addEventListener('beforeunload', wipFiber.hooks[hookIndex].unmount);
 }
 
 const hasDepsChanged = (prevDeps, nextDeps) =>
@@ -68,5 +69,3 @@ const hasDepsChanged = (prevDeps, nextDeps) =>
   !nextDeps ||
   prevDeps.length !== nextDeps.length ||
   prevDeps.some((dep, index) => dep !== nextDeps[index]);
-
-// https://codepen.io/vitaminvp/pen/zYNzgPZ?editors=0010
