@@ -1,18 +1,18 @@
 {
   "name": "frontend-2021-framework",
-  "version": "1.1.1",
+  "version": "1.2.1",
   "description": "",
-  "main": "index.html",
+  "main": "src/index.html",
   "scripts": {
-    "start": "parcel ./index.html",
-    "lint:js": "npx eslint --cache .",
+    "start": "parcel src/index.html",
+    "lint:js": "npx eslint --cache **/*.js",
     "lint:js:fix": "npm run lint:js -- --fix",
-    "prettify": "npx prettier --write \"**/*.{js,css,md,html}\"",
+    "prettify": "npx prettier --write **/*.{js,css,md,html}",
     "lint": "npm run lint:js:fix && npm run prettify",
     "lint:staged": "npx lint-staged",
     "prebuild": "shx rm -rf dist/*",
-    "build": "parcel build ./index.html --public-url ./",
-    "deploy": "gh-pages -d dist"
+    "build": "parcel build src/index.html --public-url ./",
+    "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,8 @@
   "devDependencies": {
     "@babel/core": "^7.13.14",
     "@babel/eslint-parser": "^7.13.14",
+    "@babel/plugin-syntax-jsx": "^7.12.13",
+    "@babel/plugin-transform-react-jsx": "^7.13.12",
     "@babel/preset-env": "^7.13.12",
     "autoprefixer": "^9.8.6",
     "babel-preset-env": "^1.7.0",
@@ -44,6 +46,16 @@
     "shx": "^0.3.3"
   },
   "babel": {
+    "plugins": [
+      [
+        "@babel/plugin-transform-react-jsx",
+        {
+          "pragma": "createElement",
+          "pragmaFRag": "createFragment",
+          "throwIfNamespace": "true"
+        }
+      ]
+    ],
     "presets": [
       [
         "env",
