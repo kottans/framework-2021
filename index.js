@@ -1,4 +1,4 @@
-import { cityByWeather } from './fixtures';
+import { weatherByCity } from './fixtures';
 import {
   CELSIUS_UNITS,
   displayInUnits,
@@ -11,7 +11,7 @@ if (module.hot) {
   module.hot.accept();
 }
 
-window.dataStore = window.dataStore || {
+window.dataStore = {
   currentCity: '',
   currentUnits: CELSIUS_UNITS,
 };
@@ -68,7 +68,7 @@ function UnitSwitch(currentUnits, setCurrentUnitsCB) {
 }
 
 function SearchByCity() {
-  const weatherData = cityByWeather[window.dataStore.currentCity];
+  const weatherData = weatherByCity[window.dataStore.currentCity];
 
   return `
     <input
@@ -76,13 +76,13 @@ function SearchByCity() {
         value="${window.dataStore.currentCity}"
         onchange="window.dataStore.currentCity = this.value; window.renderApp();" 
     />
-    ${!weatherData ? `Enter one of the city names: ${Object.keys(cityByWeather).join(', ')}.` : ''}
+    ${!weatherData ? `Enter one of the city names: ${Object.keys(weatherByCity).join(', ')}.` : ''}
 `;
 }
 
 function WeatherToday() {
   const { currentCity, currentUnits } = window.dataStore;
-  const weatherData = cityByWeather[currentCity];
+  const weatherData = weatherByCity[currentCity];
   let content = '';
 
   if (weatherData) {
@@ -105,7 +105,7 @@ function WeatherToday() {
 
 function WeatherForecast() {
   const { currentCity, currentUnits } = window.dataStore;
-  const weatherData = cityByWeather[currentCity];
+  const weatherData = weatherByCity[currentCity];
   let content = '';
   if (weatherData) {
     content += `Weather forecast for ${currentCity}:`;

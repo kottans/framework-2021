@@ -1,4 +1,4 @@
-export const cityByWeather = {
+export const weatherByCity = {
   London: {
     lat: 51.5085,
     lon: -0.1257,
