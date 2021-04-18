@@ -12,7 +12,7 @@
     "lint:staged": "npx lint-staged",
     "prebuild": "shx rm -rf dist/*",
     "build": "parcel build ./index.html --public-url ./",
-    "unhook:deploy": "shx mkdir -p ./dist/node_modules/pre-commit && echo # > ./dist/node_modules/pre-commit/hook",
+    "unhook:deploy": "shx mkdir -p ./dist/node_modules/pre-commit && touch ./dist/node_modules/pre-commit/hook && chmod 0755 ./dist/node_modules/pre-commit/hook",
     "deploy": "npm run unhook:deploy && push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
   },
   "repository": {
