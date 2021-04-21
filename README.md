@@ -24,6 +24,8 @@ Out of scope:
 ## Development
 
 `npm install` to install dependencies.
+Ignore npm audit warnings.
+If any changes appear on `package-lock.json` just commit those.
 
 `npm start` to launch dev server, app would be served at http://localhost:1234/
 
