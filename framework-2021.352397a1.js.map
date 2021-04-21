@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.js"],"names":["start","t","Promise","resolve","console","warn"],"mappings":";AACA,eAAeA,IACTC,IAAAA,QAAUC,QAAQC,QAAQ,UAC9BC,QAAQC,KAAKJ,GAEfD","file":"framework-2021.352397a1.js","sourceRoot":"..","sourcesContent":["// Start from here\nasync function start() {\n  let t = await Promise.resolve(\"got it\");\n  console.warn(t);\n}\nstart();\n"]}
