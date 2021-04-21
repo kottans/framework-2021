@@ -1,18 +1,18 @@
 {
   "name": "frontend-2021-framework",
-  "version": "0.2.0",
+  "version": "0.3.1",
   "description": "",
   "main": "index.html",
   "scripts": {
     "start": "parcel ./index.html",
-    "lint:js": "npx eslint --cache **/*.js",
+    "lint:js": "npx eslint --cache .",
     "lint:js:fix": "npm run lint:js -- --fix",
-    "prettify": "npx prettier --write **/*.{js,css,md,html}",
+    "prettify": "npx prettier --write \"**/*.{js,css,md,html}\"",
     "lint": "npm run lint:js:fix && npm run prettify",
     "lint:staged": "npx lint-staged",
     "prebuild": "shx rm -rf dist/*",
     "build": "parcel build ./index.html --public-url ./",
-    "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
@@ -35,12 +35,12 @@
     "eslint": "^7.23.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.3.1",
+    "gh-pages": "^3.1.0",
     "lint-staged": "^10.5.4",
     "parcel-bundler": "1.12.3",
     "postcss-modules": "^3.2.2",
     "pre-commit": "^1.2.2",
     "prettier": "^2.2.1",
-    "push-dir": "^0.4.1",
     "shx": "^0.3.3"
   },
   "babel": {
@@ -55,6 +55,9 @@
       ]
     ]
   },
+  "browserslist": [
+    "since 2021-01"
+  ],
   "pre-commit": "lint:staged",
   "lint-staged": {
     "**/*.{js,jsx}": [
