@@ -12,8 +12,7 @@
     "lint:staged": "npx lint-staged",
     "prebuild": "shx rm -rf dist/*",
     "build": "parcel build ./index.html --public-url ./",
-    "unhook:deploy": "shx mkdir -p ./dist/node_modules/pre-commit && touch ./dist/node_modules/pre-commit/hook && chmod 0755 ./dist/node_modules/pre-commit/hook",
-    "deploy": "npm run unhook:deploy && push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
@@ -36,12 +35,12 @@
     "eslint": "^7.23.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.3.1",
+    "gh-pages": "^3.1.0",
     "lint-staged": "^10.5.4",
     "parcel-bundler": "1.12.3",
     "postcss-modules": "^3.2.2",
     "pre-commit": "^1.2.2",
     "prettier": "^2.2.1",
-    "push-dir": "^0.4.1",
     "shx": "^0.3.3"
   },
   "babel": {
