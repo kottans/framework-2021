@@ -55,6 +55,9 @@
       ]
     ]
   },
+  "browserslist": [
+    "since 2021-01"
+  ],
   "pre-commit": "lint:staged",
   "lint-staged": {
     "**/*.{js,jsx}": [
