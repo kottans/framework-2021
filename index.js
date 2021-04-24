@@ -58,7 +58,7 @@ function performSearch(cityName) {
 
   window
     .validateAndLoadData()
-    .then((error, data) => {
+    .then(({ error, data }) => {
       window.dataStore.isDataLoading = false;
 
       if (error) {
