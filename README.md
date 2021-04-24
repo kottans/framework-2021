@@ -23,6 +23,7 @@ Out of scope:
 
 ## Development
 
+Make sure you have [Node.js](https://nodejs.org/en/) installed on your machine.
 `npm install` to install dependencies.
 Ignore npm audit warnings.
 If any changes appear on `package-lock.json` just commit those.
