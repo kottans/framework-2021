@@ -1,29 +1,20 @@
-import { OPEN_WEATHER_MAP_API_KEY } from '../secrets';
-
-export const cityCoordinates = {
-  London: {
-    lat: 51.5085,
-    lon: -0.1257,
-  },
-  Kyiv: {
-    lat: 50.4333,
-    lon: 30.5167,
-  },
-  Warsaw: {
-    lat: 52.2298,
-    lon: 21.0118,
-  },
-  Paris: {
-    lat: 48.8534,
-    lon: 2.3488,
-  },
-};
-
-export const allowedCities = Object.keys(cityCoordinates);
+/** @jsx createElement */
+/** @jsxFrag createFragment */
+import { createElement, createFragment } from '../framework/element';
+import {
+  displayInUnits,
+  getDateTimeFromUnixTimestamp,
+  getWeatherFormattedDate,
+  getWeatherFormattedTime,
+} from '../utils';
 
 export function getOpenWeatherMapUrl(cityName) {
-  const { lat, lon } = cityCoordinates[cityName];
-  return `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&appid=${OPEN_WEATHER_MAP_API_KEY}`;
+  return `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${process.env.OPEN_WEATHER_MAP_API_KEY}`;
+}
+
+export function loadOpenWeatherMapData(currentCity) {
+  const url = getOpenWeatherMapUrl(currentCity);
+  return fetch(url).then(response => response.json());
 }
 
 export function getIconPropertiesFromCode(iconCode) {
@@ -32,5 +23,21 @@ export function getIconPropertiesFromCode(iconCode) {
     width: '30px',
     height: '30px',
     alt: 'weather icon',
+  };
+}
+
+export function getAdaptedWeatherData(
+  { dt, main: { feels_like, temp }, weather: [{ main, description, icon }] },
+  currentUnits,
+) {
+  return {
+    formattedDate: getWeatherFormattedDate(dt),
+    formattedTime: getWeatherFormattedTime(dt),
+    dateTime: getDateTimeFromUnixTimestamp(dt),
+    description,
+    feelsLikeInUnits: displayInUnits(feels_like, currentUnits),
+    main,
+    tempInUnits: displayInUnits(temp, currentUnits),
+    weatherIconProps: getIconPropertiesFromCode(icon),
   };
 }
