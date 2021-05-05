@@ -1,6 +1,3 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment } from '../framework/element';
 import {
   displayInUnits,
   getDateTimeFromUnixTimestamp,
