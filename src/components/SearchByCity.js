@@ -1,15 +1,9 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
-import { createElement } from '../framework/element';
+import { createElement } from '../framework';
 
-function SearchByCity() {
-  return (
-    <input
-      type="text"
-      value={window.dataStore.currentCity}
-      onChange={e => window.performSearch(e.target.value)}
-    />
-  );
+function SearchByCity({ value, onChange }) {
+  return <input type="text" value={value} onChange={event => onChange(event.target.value)} />;
 }
 
 export default SearchByCity;
