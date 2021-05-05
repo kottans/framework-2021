@@ -3,7 +3,8 @@ import { loadOpenWeatherMapData } from './openWeatherMapAPI';
 
 export function getCurrentCityWeatherData() {
   const { currentCity, cityByWeather } = window.dataStore;
-  return cityByWeather[currentCity]?.list;
+  // no ?. operator in parcel-bundler version used 😢
+  return cityByWeather[currentCity] ? cityByWeather[currentCity].list : undefined;
 }
 
 export function isCurrentCityDataLoaded() {
@@ -35,7 +36,8 @@ export function performSearch(cityName) {
 
       const errorFromAPI = data.code !== '200' && data.message;
       if (error || errorFromAPI) {
-        window.dataStore.error = error ?? data.message;
+        // no ?? operator in parcel-bundler version used 😢
+        window.dataStore.error = error || data.message;
       } else if (data) {
         window.dataStore.cityByWeather[cityName] = data;
       }
