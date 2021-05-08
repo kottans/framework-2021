@@ -9,9 +9,20 @@ export function getOpenWeatherMapUrl(cityName) {
   return `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${process.env.OPEN_WEATHER_MAP_API_KEY}`;
 }
 
+const dataStorage = {};
+
 export function loadOpenWeatherMapData(currentCity) {
+  const currentCityData = dataStorage[currentCity];
+
+  if (currentCityData) return currentCityData;
+
   const url = getOpenWeatherMapUrl(currentCity);
-  return fetch(url).then(response => response.json());
+
+  return fetch(url).then(response => {
+    const result = response.json();
+    dataStorage[currentCity] = result;
+    return result;
+  });
 }
 
 export function getIconPropertiesFromCode(iconCode) {
