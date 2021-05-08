@@ -1,5 +1,5 @@
 export function getFilteredByDateWeatherData(
-  weatherDataList,
+  weatherDataList = [],
   { includeDatesAfterBase = false, includeBaseDate = false, baseDate = new Date() },
 ) {
   const baseDateDay = baseDate.getDate();

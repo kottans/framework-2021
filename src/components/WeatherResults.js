@@ -23,7 +23,7 @@ function WeatherResults({ isLoading, error, currentCity, weatherData: cityByWeat
     return <div>{error}</div>;
   }
 
-  const weatherData = cityByWeather?.list;
+  const weatherData = cityByWeather.list;
   const weatherTodayData = getFilteredByDateWeatherData(weatherData, { includeBaseDate: true });
   const weatherForecastData = getFilteredByDateWeatherData(weatherData, {
     includeDatesAfterBase: true,
