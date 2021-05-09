@@ -1,12 +1,13 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
-import { createElement, createFragment, useContext } from '../framework';
+import { createElement, createFragment } from '../framework';
+import { useAppContext } from '../context';
 import { getAdaptedWeatherData } from '../data/openWeatherMapAPI';
 import WeatherForecastItem from './WeatherForecastItem';
 import { AppContext } from './App';
 
 function WeatherForecast({ currentUnits, currentCity }) {
-  const { forecast } = useContext(AppContext);
+  const { forecast } = useAppContext();
   if (!forecast) return null;
 
   return (
