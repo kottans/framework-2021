@@ -4,14 +4,14 @@
   "description": "",
   "main": "index.html",
   "scripts": {
-    "start": "parcel ./index.html",
+    "start": "parcel ./src/index.html",
     "lint:js": "npx eslint --cache .",
     "lint:js:fix": "npm run lint:js -- --fix",
     "prettify": "npx prettier --write \"**/*.{js,css,md,html}\"",
     "lint": "npm run lint:js:fix && npm run prettify",
     "lint:staged": "npx lint-staged",
     "prebuild": "shx rm -rf dist/*",
-    "build": "parcel build ./index.html --public-url ./",
+    "build": "parcel build src/index.html --public-url ./",
     "deploy": "gh-pages -d dist"
   },
   "repository": {
