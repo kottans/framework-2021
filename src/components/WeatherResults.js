@@ -6,7 +6,7 @@ import WeatherForecast from './WeatherForecast';
 
 const setCurrentUnits = function (value) {
   window.dataStore.currentUnits = value;
-  renderApp();
+  window.renderApp();
 };
 
 export default function WeatherResults() {
