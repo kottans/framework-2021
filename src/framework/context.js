@@ -21,7 +21,7 @@ export function createContext(defaultValue) {
   let hasWarnedAboutUsingUseContext = false;
 
   context.Provider = function ({ value = defaultValue, children }) {
-    if (context.value !== value) {
+    if (!Object.is(context.value, value)) {
       current.shouldReRender = true;
       context.value = value;
     }

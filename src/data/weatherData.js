@@ -15,3 +15,13 @@ export function getFilteredByDateWeatherData(
     return includeDatesAfterBase && baseDate < itemDate && !isToday;
   });
 }
+
+export const getWeatherForToday = (weatherDataList = []) =>
+  getFilteredByDateWeatherData(weatherDataList, {
+    includeBaseDate: true,
+  });
+
+export const getWeatherForecast = (weatherDataList = []) =>
+  getFilteredByDateWeatherData(weatherDataList, {
+    includeDatesAfterBase: true,
+  });

@@ -1,5 +1,6 @@
 import { useEffect, useState } from './framework';
 import { loadOpenWeatherMapData } from './data/openWeatherMapAPI';
+import { getWeatherForToday, getWeatherForecast } from './data/weatherData';
 
 export const useWeather = () => {
   const [currentCity, setCurrentCity] = useState('');
@@ -16,7 +17,10 @@ export const useWeather = () => {
           if (code !== '200' && message) throw Error(message);
 
           setError(null);
-          setWeatherData(data);
+          setWeatherData({
+            today: getWeatherForToday(data.list),
+            forecast: getWeatherForecast(data.list),
+          });
         })
         .catch(setError)
         .finally(() => setIsLoading(false));

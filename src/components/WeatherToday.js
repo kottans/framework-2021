@@ -2,15 +2,18 @@
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from '../framework/element';
 import { getAdaptedWeatherData } from '../data/openWeatherMapAPI';
+import { useContext } from '../framework';
 import WeatherForecastItem from './WeatherForecastItem';
+import { AppContext } from './App';
 
-function WeatherToday({ weatherData, currentUnits, currentCity }) {
-  if (!weatherData) return null;
+function WeatherToday({ currentUnits, currentCity }) {
+  const { today } = useContext(AppContext);
+  if (!today) return null;
 
   return (
     <>
       <div>Weather for today in {currentCity}:</div>
-      {weatherData.map(item => (
+      {today.map(item => (
         <WeatherForecastItem {...getAdaptedWeatherData(item, currentUnits)} shouldShowTime={true} />
       ))}
     </>

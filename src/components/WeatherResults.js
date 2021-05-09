@@ -6,9 +6,8 @@ import { CELSIUS_UNITS } from '../utils';
 import UnitSwitch from './UnitSwitch';
 import WeatherToday from './WeatherToday';
 import WeatherForecast from './WeatherForecast';
-import { getFilteredByDateWeatherData } from '../data/weatherData';
 
-function WeatherResults({ isLoading, error, currentCity, weatherData: cityByWeather }) {
+function WeatherResults({ isLoading, error, currentCity }) {
   const [currentUnits, setCurrentUnits] = useState(CELSIUS_UNITS);
 
   if (!currentCity) {
@@ -23,27 +22,14 @@ function WeatherResults({ isLoading, error, currentCity, weatherData: cityByWeat
     return <div>{error}</div>;
   }
 
-  const weatherData = cityByWeather.list;
-  const weatherTodayData = getFilteredByDateWeatherData(weatherData, { includeBaseDate: true });
-  const weatherForecastData = getFilteredByDateWeatherData(weatherData, {
-    includeDatesAfterBase: true,
-  });
   return (
     <>
       <UnitSwitch currentUnits={currentUnits} setCurrentUnits={setCurrentUnits} />
       <br />
-      <WeatherToday
-        currentUnits={currentUnits}
-        currentCity={currentCity}
-        weatherData={weatherTodayData}
-      />
+      <WeatherToday currentUnits={currentUnits} currentCity={currentCity} />
       <br />
       <br />
-      <WeatherForecast
-        currentUnits={currentUnits}
-        currentCity={currentCity}
-        weatherData={weatherForecastData}
-      />
+      <WeatherForecast currentUnits={currentUnits} currentCity={currentCity} />
     </>
   );
 }
