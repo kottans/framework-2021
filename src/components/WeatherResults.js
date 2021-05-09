@@ -1,14 +1,13 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
 import { createElement, createFragment, useState } from '../framework';
-import { CELSIUS_UNITS } from '../utils';
-
+import { getFilteredByDateWeatherData } from '../data/weatherData';
 import UnitSwitch from './UnitSwitch';
+import { CELSIUS_UNITS } from '../utils';
 import WeatherToday from './WeatherToday';
 import WeatherForecast from './WeatherForecast';
-import { getFilteredByDateWeatherData } from '../data/weatherData';
 
-function WeatherResults({ isLoading, error, currentCity, weatherData: cityByWeather }) {
+function WeatherResults({ isLoading, error, currentCity, weatherData: { list } }) {
   const [currentUnits, setCurrentUnits] = useState(CELSIUS_UNITS);
 
   if (!currentCity) {
@@ -23,9 +22,8 @@ function WeatherResults({ isLoading, error, currentCity, weatherData: cityByWeat
     return <div>{error}</div>;
   }
 
-  const weatherData = cityByWeather.list;
-  const weatherTodayData = getFilteredByDateWeatherData(weatherData, { includeBaseDate: true });
-  const weatherForecastData = getFilteredByDateWeatherData(weatherData, {
+  const weatherTodayData = getFilteredByDateWeatherData(list, { includeBaseDate: true });
+  const weatherForecastData = getFilteredByDateWeatherData(list, {
     includeDatesAfterBase: true,
   });
   return (

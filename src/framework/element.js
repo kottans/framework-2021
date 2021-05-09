@@ -5,8 +5,6 @@
  * @param {Node[]} children - child elements
  * @returns {DocumentFragment|Element}
  */
-/** @jsx createElement */
-/*** @jsxFrag createFragment */
 import { createFunctionElement } from './hooks';
 import { isFunction } from '../utils';
 
