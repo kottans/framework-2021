@@ -49,7 +49,7 @@
         "@babel/plugin-transform-react-jsx",
         {
           "pragma": "createElement",
-          "pragmaFRag": "createFragment",
+          "pragmaFrag": "createFragment",
           "throwIfNamespace": "true"
         }
       ]

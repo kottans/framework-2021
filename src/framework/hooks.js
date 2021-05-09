@@ -66,3 +66,5 @@ const hasDepsChanged = (prevDeps, nextDeps) =>
   !nextDeps ||
   prevDeps.length !== nextDeps.length ||
   prevDeps.some((dep, index) => dep !== nextDeps[index]);
+
+export const useContext = Context => Context.value;
