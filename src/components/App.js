@@ -13,7 +13,11 @@ function App() {
     <>
       <SearchByCity value={currentCity} onChange={setCurrentCity} />
       <AppContext.Provider value={weatherData}>
-        <WeatherResults currentCity={currentCity} error={error} isLoading={isLoading} />
+        {!currentCity ? (
+          <div>Search by city name</div>
+        ) : (
+          <WeatherResults error={error} isLoading={isLoading} />
+        )}
       </AppContext.Provider>
     </>
   );

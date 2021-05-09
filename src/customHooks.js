@@ -20,6 +20,7 @@ export const useWeather = () => {
           setWeatherData({
             today: getWeatherForToday(data.list),
             forecast: getWeatherForecast(data.list),
+            currentCity,
           });
         })
         .catch(setError)

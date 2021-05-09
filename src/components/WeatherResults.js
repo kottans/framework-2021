@@ -8,12 +8,8 @@ import UnitSwitch from './UnitSwitch';
 import WeatherToday from './WeatherToday';
 import WeatherForecast from './WeatherForecast';
 
-function WeatherResults({ isLoading, error, currentCity }) {
+function WeatherResults({ isLoading, error }) {
   const [currentUnits, setCurrentUnits] = useState(CELSIUS_UNITS);
-
-  if (!currentCity) {
-    return <div>Search by city name</div>;
-  }
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -28,10 +24,10 @@ function WeatherResults({ isLoading, error, currentCity }) {
       <UnitSwitch currentUnits={currentUnits} setCurrentUnits={setCurrentUnits} />
       <br />
       <UnitsContext.Provider value={currentUnits}>
-        <WeatherToday currentCity={currentCity} />
+        <WeatherToday />
         <br />
         <br />
-        <WeatherForecast currentCity={currentCity} />
+        <WeatherForecast />
       </UnitsContext.Provider>
     </>
   );

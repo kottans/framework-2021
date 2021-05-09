@@ -5,8 +5,8 @@ import { useAppContext, useUnitsContext } from '../context';
 import { getAdaptedWeatherData } from '../data/openWeatherMapAPI';
 import WeatherForecastItem from './WeatherForecastItem';
 
-function WeatherForecast({ currentCity }) {
-  const { forecast } = useAppContext();
+function WeatherForecast() {
+  const { forecast, currentCity } = useAppContext();
   const currentUnits = useUnitsContext();
   if (!forecast) return null;
 
