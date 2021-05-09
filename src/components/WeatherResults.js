@@ -2,6 +2,7 @@
 /** @jsxFrag createFragment */
 import { createElement, createFragment, useState } from '../framework';
 import { CELSIUS_UNITS } from '../utils';
+import { UnitsContext } from '../context';
 
 import UnitSwitch from './UnitSwitch';
 import WeatherToday from './WeatherToday';
@@ -26,10 +27,12 @@ function WeatherResults({ isLoading, error, currentCity }) {
     <>
       <UnitSwitch currentUnits={currentUnits} setCurrentUnits={setCurrentUnits} />
       <br />
-      <WeatherToday currentUnits={currentUnits} currentCity={currentCity} />
-      <br />
-      <br />
-      <WeatherForecast currentUnits={currentUnits} currentCity={currentCity} />
+      <UnitsContext.Provider value={currentUnits}>
+        <WeatherToday currentCity={currentCity} />
+        <br />
+        <br />
+        <WeatherForecast currentCity={currentCity} />
+      </UnitsContext.Provider>
     </>
   );
 }
