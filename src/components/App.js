@@ -1,10 +1,9 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
-import { createElement, createFragment } from '../framework';
+import { createElement, createFragment, createContext } from '../framework';
 import { useWeather } from '../customHooks';
 import SearchByCity from './SearchByCity';
 import WeatherResults from './WeatherResults';
-import { createContext } from '../framework';
 
 export const AppContext = createContext();
 

@@ -1,8 +1,7 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
-import { createElement, createFragment } from '../framework/element';
+import { createElement, createFragment, useContext } from '../framework';
 import { getAdaptedWeatherData } from '../data/openWeatherMapAPI';
-import { useContext } from '../framework';
 import WeatherForecastItem from './WeatherForecastItem';
 import { AppContext } from './App';
 
