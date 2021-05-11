@@ -1,4 +1,5 @@
 import { current } from '../framework';
+import { isFunction } from '../utils';
 
 /**
  * @typedef {Object} Context
@@ -30,7 +31,7 @@ export function createContext(defaultValue) {
 
   context.Consumer = function ({ children }) {
     const [renderFunction] = children;
-    if (typeof renderFunction !== 'function') {
+    if (isFunction(renderFunction)) {
       !hasWarnedAboutUsingUseContext &&
         console.warn(
           'Requires a function as a child.',
