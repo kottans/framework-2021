@@ -1,16 +1,19 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
-import { createElement, createFragment } from '../framework/element';
-import { CELSIUS_UNITS, FAHRENHEIT_UNITS } from '../utils';
+import { createElement, createFragment } from '../framework';
+import { CELSIUS_UNITS, FAHRENHEIT_UNITS, KELVIN_UNITS } from '../utils';
 
-function UnitSwitch({ currentUnits, setCurrentUnitsCB }) {
+const UNITS = [
+  { id: 'celsius-units', value: CELSIUS_UNITS, name: 'C' },
+  { id: 'fahrenheit-units', value: FAHRENHEIT_UNITS, name: 'F' },
+  { id: 'kelvin-units', value: KELVIN_UNITS, name: 'K' },
+];
+
+function UnitSwitch({ currentUnits, setCurrentUnits }) {
   return (
     <>
       <p>Select units</p>
-      {[
-        { id: 'celsius-units', value: CELSIUS_UNITS, name: 'C' },
-        { id: 'fahrenheit-units', value: FAHRENHEIT_UNITS, name: 'F' },
-      ].map(({ id, value, name }) => (
+      {UNITS.map(({ id, value, name }) => (
         <div>
           <input
             type="radio"
@@ -18,7 +21,7 @@ function UnitSwitch({ currentUnits, setCurrentUnitsCB }) {
             name="temperature-units"
             value={value}
             checked={currentUnits === value}
-            onChange={event => setCurrentUnitsCB(event.target.value)}
+            onChange={event => setCurrentUnits(event.target.value)}
           />
           <label For={id}>˚{name}</label>
         </div>
