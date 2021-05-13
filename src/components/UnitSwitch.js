@@ -1,5 +1,5 @@
 /** @jsx createElement */
-/*** @jsxFrag createFragment */
+/** @jsxFrag createFragment */
 import { createElement, createFragment } from '../framework/element';
 import { CELSIUS_UNITS, FAHRENHEIT_UNITS } from '../utils';
 
@@ -18,7 +18,7 @@ function UnitSwitch({ currentUnits, setCurrentUnitsCB }) {
             name="temperature-units"
             value={value}
             checked={currentUnits === value}
-            onChange={e => setCurrentUnitsCB(e.target.value)}
+            onChange={event => setCurrentUnitsCB(event.target.value)}
           />
           <label For={id}>˚{name}</label>
         </div>

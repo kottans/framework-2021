@@ -1,5 +1,5 @@
 /** @jsx createElement */
-/*** @jsxFrag createFragment */
+/** @jsxFrag createFragment */
 import { createElement, createFragment } from '../framework/element';
 import SearchByCity from './SearchByCity';
 import WeatherResults from './WeatherResults';

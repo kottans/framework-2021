@@ -1,5 +1,5 @@
 /** @jsx createElement */
-/*** @jsxFrag createFragment */
+/** @jsxFrag createFragment */
 import { createElement } from '../framework/element';
 
 function SearchByCity() {

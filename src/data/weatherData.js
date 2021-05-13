@@ -1,8 +1,10 @@
-import { allowedCities, getOpenWeatherMapUrl } from './openWeatherMapAPI';
+import renderApp from '../framework/render';
+import { loadOpenWeatherMapData } from './openWeatherMapAPI';
 
-export function getCurrentCityData() {
+export function getCurrentCityWeatherData() {
   const { currentCity, cityByWeather } = window.dataStore;
-  return cityByWeather[currentCity];
+  // no ?. operator in parcel-bundler version used 😢
+  return cityByWeather[currentCity] ? cityByWeather[currentCity].list : undefined;
 }
 
 export function isCurrentCityDataLoaded() {
@@ -13,16 +15,8 @@ export function isCurrentCityDataLoaded() {
 export function validateAndLoadData() {
   const { currentCity } = window.dataStore;
 
-  if (!allowedCities.includes(currentCity)) {
-    const error = `Enter one of the city names: ${allowedCities.join(', ')}.`;
-    return Promise.resolve({ error });
-  }
-
   if (!isCurrentCityDataLoaded()) {
-    const url = getOpenWeatherMapUrl(currentCity);
-    return fetch(url)
-      .then(response => response.json())
-      .then(data => ({ data }));
+    return loadOpenWeatherMapData(currentCity).then(data => ({ data }));
   }
 
   // no errors and no new data loaded, app will take data from cache
@@ -34,13 +28,16 @@ export function performSearch(cityName) {
   window.dataStore.error = null;
   window.dataStore.isDataLoading = true;
 
+  renderApp();
   window
     .validateAndLoadData()
     .then(({ error, data }) => {
       window.dataStore.isDataLoading = false;
 
-      if (error) {
-        window.dataStore.error = error;
+      const errorFromAPI = data.code !== '200' && data.message;
+      if (error || errorFromAPI) {
+        // no ?? operator in parcel-bundler version used 😢
+        window.dataStore.error = error || data.message;
       } else if (data) {
         window.dataStore.cityByWeather[cityName] = data;
       }
@@ -48,5 +45,23 @@ export function performSearch(cityName) {
     .catch(() => {
       window.dataStore.error = 'Some error occurred.';
     })
-    .finally(window.renderApp);
+    .finally(renderApp);
+}
+
+export function getFilteredByDateWeatherData(
+  weatherDataList,
+  { includeDatesAfterBase = false, includeBaseDate = false, baseDate = new Date() },
+) {
+  const baseDateDay = baseDate.getDate();
+  return weatherDataList.filter(({ dt }) => {
+    const itemDate = new Date(dt * 1000);
+
+    const itemDateDay = itemDate.getDate();
+    const isToday = baseDateDay === itemDateDay;
+    if (includeBaseDate && isToday) {
+      return true;
+    }
+
+    return includeDatesAfterBase && baseDate < itemDate && !isToday;
+  });
 }

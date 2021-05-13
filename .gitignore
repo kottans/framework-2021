@@ -25,3 +25,4 @@ Desktop.ini
 Thumbs.db
 ._*
 tmp/
+.env

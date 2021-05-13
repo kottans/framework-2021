@@ -7,10 +7,9 @@ if (module.hot) {
   module.hot.accept();
 }
 
-window.dataStore = window.dataStore || dataStore;
-window.renderApp = renderApp;
+window.dataStore = dataStore;
 window.validateAndLoadData = validateAndLoadData;
 window.performSearch = performSearch;
 
 // pass a component function itself so that `renderApp` could invoke it as needed
-window.renderApp(App, document.getElementById('app-root'));
+renderApp(App, document.getElementById('app-root'));
