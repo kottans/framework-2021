@@ -1,26 +1,20 @@
-import { getCurrentCityData } from '../data/weatherData';
-import { displayInUnits, getDateFromUnixTimestamp } from '../utils';
-import { getIconFromCode } from '../data/openWeatherMapAPI';
+/** @jsx createElement */
+/** @jsxFrag createFragment */
+import { createElement, createFragment } from '../framework/element';
+import { getAdaptedWeatherData } from '../data/openWeatherMapAPI';
+import WeatherForecastItem from './WeatherForecastItem';
 
-export default function WeatherToday() {
-  const { currentCity, currentUnits } = window.dataStore;
-  const weatherData = getCurrentCityData();
-  let content = '';
+function WeatherToday({ weatherData, currentUnits, currentCity }) {
+  if (!weatherData) return null;
 
-  if (weatherData) {
-    const {
-      current: {
-        dt,
-        temp,
-        weather: [{ main, description, icon }],
-      },
-    } = weatherData;
-    const tempInUnits = displayInUnits(temp, currentUnits);
-    const dateString = getDateFromUnixTimestamp(dt);
-    const weatherIcon = getIconFromCode(icon);
-    content += `<div>Weather for ${dateString} in ${currentCity}:</div>`;
-    content += `<div>${weatherIcon} ${main} (${description}). Temperature is ${tempInUnits}</div>`;
-  }
-
-  return content ? `<div>${content}</div>` : '';
+  return (
+    <>
+      <div>Weather for today in {currentCity}:</div>
+      {weatherData.map(item => (
+        <WeatherForecastItem {...getAdaptedWeatherData(item, currentUnits)} shouldShowTime={true} />
+      ))}
+    </>
+  );
 }
+
+export default WeatherToday;

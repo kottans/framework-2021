@@ -14,4 +14,4 @@ window.performSearch = performSearch;
 window.validateAndLoadData = validateAndLoadData;
 window.performSearch = performSearch;
 
-renderApp(App, 'app-root');
+renderApp(App, document.getElementById('app-root'));

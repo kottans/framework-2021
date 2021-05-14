@@ -1,29 +1,24 @@
-import { allowedCities, getOpenWeatherMapUrl } from './openWeatherMapAPI';
+import { loadOpenWeatherMapData } from './openWeatherMapAPI';
 
-export function getCurrentCityData() {
+export function getCurrentCityWeatherData() {
   const { currentCity, cityByWeather } = window.dataStore;
-  return cityByWeather[currentCity];
+  // no ?. operator in parcel-bundler version used 😢
+  return cityByWeather[currentCity] ? cityByWeather[currentCity].list : undefined;
 }
 
 export function isCurrentCityDataLoaded() {
-  return Boolean(getCurrentCityData());
+  const { currentCity, cityByWeather } = window.dataStore;
+  return cityByWeather.hasOwnProperty(currentCity);
 }
 
 export function validateAndLoadData() {
   const { currentCity } = window.dataStore;
 
-  if (!allowedCities.includes(currentCity)) {
-    const error = `Enter one of the city names: ${allowedCities.join(', ')}.`;
-    return Promise.resolve({ error });
-  }
-
-  const url = getOpenWeatherMapUrl(currentCity);
   if (!isCurrentCityDataLoaded()) {
-    return fetch(url)
-      .then(response => response.json())
-      .then(data => ({ data }));
+    return loadOpenWeatherMapData(currentCity).then(data => ({ data }));
   }
 
+  // no errors and no new data loaded, app will take data from cache
   return Promise.resolve({});
 }
 
@@ -32,14 +27,15 @@ export function performSearch(cityName) {
   window.dataStore.error = null;
   window.dataStore.isDataLoading = true;
   window.renderApp();
-
   window
     .validateAndLoadData()
     .then(({ error, data }) => {
       window.dataStore.isDataLoading = false;
 
-      if (error) {
-        window.dataStore.error = error;
+      const errorFromAPI = data.code !== '200' && data.message;
+      if (error || errorFromAPI) {
+        // no ?? operator in parcel-bundler version used 😢
+        window.dataStore.error = error || data.message;
       } else if (data) {
         window.dataStore.cityByWeather[cityName] = data;
       }
@@ -48,4 +44,22 @@ export function performSearch(cityName) {
       window.dataStore.error = 'Some error occurred.';
     })
     .finally(window.renderApp);
+}
+
+export function getFilteredByDateWeatherData(
+  weatherDataList,
+  { includeDatesAfterBase = false, includeBaseDate = false, baseDate = new Date() },
+) {
+  const baseDateDay = baseDate.getDate();
+  return weatherDataList.filter(({ dt }) => {
+    const itemDate = new Date(dt * 1000);
+
+    const itemDateDay = itemDate.getDate();
+    const isToday = baseDateDay === itemDateDay;
+    if (includeBaseDate && isToday) {
+      return true;
+    }
+
+    return includeDatesAfterBase && baseDate < itemDate && !isToday;
+  });
 }

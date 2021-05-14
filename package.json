@@ -29,6 +29,8 @@
   "devDependencies": {
     "@babel/core": "^7.13.14",
     "@babel/eslint-parser": "^7.13.14",
+    "@babel/plugin-syntax-jsx": "^7.12.13",
+    "@babel/plugin-transform-react-jsx": "^7.13.12",
     "@babel/preset-env": "^7.13.12",
     "autoprefixer": "^9.8.6",
     "babel-preset-env": "^1.7.0",
@@ -44,6 +46,16 @@
     "shx": "^0.3.3"
   },
   "babel": {
+    "plugins": [
+      [
+        "@babel/plugin-transform-react-jsx",
+        {
+          "pragma": "createElement",
+          "pragmaFrag": "createFragment",
+          "throwIfNamespace": "true"
+        }
+      ]
+    ],
     "presets": [
       [
         "env",

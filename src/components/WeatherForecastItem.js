@@ -1,10 +1,39 @@
-export default function WeatherForecastItem({
-  dateString,
-  dayTempInUnits,
+/** @jsx createElement */
+/** @jsxFrag createFragment */
+import { createElement, createFragment } from '../framework/element';
+
+function WeatherForecastItem({
   description,
+  formattedTime,
+  formattedDate,
   main,
-  nightTempInUnits,
-  weatherIcon,
+  tempInUnits,
+  feelsLikeInUnits,
+  weatherIconProps,
+  shouldShowDate = false,
+  shouldShowTime = false,
 }) {
-  return `<div>For ${dateString}, ${weatherIcon} ${main} (${description}). Day at ${dayTempInUnits}, night at ${nightTempInUnits}</div>`;
+  let dateTime = '';
+  if (shouldShowDate) {
+    dateTime = <>For {formattedDate}, </>;
+  }
+  if (shouldShowTime) {
+    dateTime = <>At {formattedTime} </>;
+  }
+  if (shouldShowDate && shouldShowTime) {
+    dateTime = (
+      <>
+        For {formattedDate}, {formattedTime}{' '}
+      </>
+    );
+  }
+
+  return (
+    <div>
+      {dateTime} <img alt={main} {...weatherIconProps} /> {main} ({description}). Temperature is{' '}
+      {tempInUnits}, feels like {feelsLikeInUnits}
+    </div>
+  );
 }
+
+export default WeatherForecastItem;
