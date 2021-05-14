@@ -1,4 +1,5 @@
 import { loadOpenWeatherMapData } from './openWeatherMapAPI';
+import renderApp from '../framework/render';
 
 export function getCurrentCityWeatherData() {
   const { currentCity, cityByWeather } = window.dataStore;
@@ -26,9 +27,8 @@ export function performSearch(cityName) {
   window.dataStore.currentCity = cityName;
   window.dataStore.error = null;
   window.dataStore.isDataLoading = true;
-  window.renderApp();
-  window
-    .validateAndLoadData()
+  renderApp();
+  validateAndLoadData()
     .then(({ error, data }) => {
       window.dataStore.isDataLoading = false;
 
@@ -43,7 +43,7 @@ export function performSearch(cityName) {
     .catch(() => {
       window.dataStore.error = 'Some error occurred.';
     })
-    .finally(window.renderApp);
+    .finally(renderApp);
 }
 
 export function getFilteredByDateWeatherData(

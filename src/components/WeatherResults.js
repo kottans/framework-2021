@@ -1,6 +1,7 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from '../framework/element';
+import renderApp from '../framework/render';
 import UnitSwitch from './UnitSwitch';
 import WeatherToday from './WeatherToday';
 import WeatherForecast from './WeatherForecast';
@@ -12,7 +13,7 @@ import {
 
 function setCurrentUnits(value) {
   window.dataStore.currentUnits = value;
-  window.renderApp();
+  renderApp();
 }
 
 function WeatherResults() {
