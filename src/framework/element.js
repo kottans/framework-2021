@@ -28,8 +28,16 @@ export const createElement = (tag, props, ...children) => {
           // https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute#example
           if (['disabled', 'checked'].includes(name) && !value) {
             element.removeAttribute(name);
+          } else if (name.toLowerCase() === 'classname') {
+            // We want to treat both strings and arrays in a similar manner
+            const classList = typeof value === 'string' ? value.split(' ').filter(Boolean) : value;
+            element.classList.add(...classList);
           } else {
-            element.setAttribute(name, value);
+            element.setAttribute(
+              name,
+              /** @type {string} */
+              value,
+            );
           }
         }
       } catch (e) {
