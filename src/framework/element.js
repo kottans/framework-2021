@@ -26,7 +26,10 @@ export const createElement = (tag, props, ...children) => {
         if (!(element instanceof DocumentFragment)) {
           // Boolean attributes are considered to be true if they're present on the element at all, regardless of their actual value
           // https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute#example
-          if (['disabled', 'checked'].includes(name) && !value) {
+          if (
+            ['disabled', 'checked', 'multiple', 'selected', 'required'].includes(name) &&
+            !value
+          ) {
             element.removeAttribute(name);
           } else if (name.toLowerCase() === 'classname') {
             // We want to treat both strings and arrays in a similar manner
