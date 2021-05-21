@@ -31,7 +31,7 @@ export function createContext(defaultValue) {
 
   context.Consumer = function ({ children }) {
     const [renderFunction] = children;
-    if (isFunction(renderFunction)) {
+    if (!isFunction(renderFunction)) {
       !hasWarnedAboutUsingUseContext &&
         console.warn(
           'Requires a function as a child.',
