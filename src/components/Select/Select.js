@@ -2,6 +2,8 @@
 /** @jsxFrag createFragment */
 
 import { createElement, createFragment } from '../../framework/element';
+import Option from './Option';
+import Optgroup from './Optgroup';
 
 /**
  * Creates select element.
@@ -40,35 +42,25 @@ export default function Select({
   if (options.length === 0) return null;
   options = options.map((option, index) => {
     if (typeof option === 'string') {
-      return (
-        <option value={index} selected={index === selectedOption}>
-          {option}
-        </option>
-      );
+      return <Option value={index} label={option} selected={index === selectedOption} />;
     } else if (typeof option === 'object') {
       if (option.options) {
         return (
-          <optgroup label={option.label ? option.label : option.value} disabled={option.disabled}>
-            {option.options.map(groupOption => (
-              <option
-                value={groupOption.value}
-                selected={groupOption.value === selectedOption}
-                disabled={groupOption.disabled}
-              >
-                {groupOption.label ? groupOption.label : groupOption.value}
-              </option>
-            ))}
-          </optgroup>
+          <Optgroup
+            label={option.label ? option.label : option.value}
+            disabled={option.disabled}
+            selectedOption={selectedOption}
+            options={option.options}
+          />
         );
       } else {
         return (
-          <option
+          <Option
             value={option.value}
+            label={option.label ? option.label : option.value}
             selected={option.value === selectedOption}
             disabled={option.disabled}
-          >
-            {option.label ? option.label : option.value}
-          </option>
+          />
         );
       }
     }
