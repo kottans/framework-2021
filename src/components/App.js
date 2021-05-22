@@ -4,7 +4,7 @@ import { createElement, createFragment } from '../framework/element';
 import SearchByCity from './SearchByCity';
 import WeatherResults from './WeatherResults';
 import Checkbox from './Checkbox';
-import Select from './Select/Select';
+import Select from './Select';
 
 export default function App() {
   const selectOptions = [
