@@ -46,6 +46,8 @@ Out of scope:
 ## Development
 
 `npm install` to install dependencies.
+Ignore npm audit warnings.
+If any changes appear on `package-lock.json` just commit those.
 
 Create `src/secrets.js` from `src/secrets.template.js` and populate
 it with API keys and other secrets as appropriate.

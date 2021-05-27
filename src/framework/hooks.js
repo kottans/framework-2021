@@ -45,6 +45,8 @@ export function useEffect(effect, deps) {
 
   const hasChanged = hasDepsChanged(oldDeps, deps);
 
+  current.hookIndex++;
+
   if (!hasChanged) return;
 
   if (oldHook && oldHook.unmount) {
@@ -57,8 +59,6 @@ export function useEffect(effect, deps) {
   };
 
   window.addEventListener('beforeunload', wipComponent.hooks[hookIndex].unmount);
-
-  current.hookIndex++;
 }
 
 const hasDepsChanged = (prevDeps, nextDeps) =>
