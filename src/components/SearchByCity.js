@@ -1,9 +1,7 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement } from '../framework';
+import React from 'react';
 
-function SearchByCity({ value, onChange }) {
-  return <input type="text" value={value} onChange={event => onChange(event.target.value)} />;
+function SearchByCity({ value, onBlur }) {
+  return <input type="text" defaultValue={value} onBlur={event => onBlur(event.target.value)} />;
 }
 
 export default SearchByCity;

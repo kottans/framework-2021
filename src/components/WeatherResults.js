@@ -1,6 +1,4 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment, useState } from '../framework';
+import React, { useState } from 'react';
 import { CELSIUS_UNITS } from '../utils';
 import { UnitsContext } from '../context';
 
@@ -16,7 +14,7 @@ function WeatherResults({ isLoading, error }) {
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div>{typeof error === 'object' ? error.toString() : error}</div>;
   }
 
   return (

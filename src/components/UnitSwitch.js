@@ -1,6 +1,4 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment } from '../framework';
+import React from 'react';
 import { CELSIUS_UNITS, FAHRENHEIT_UNITS, KELVIN_UNITS } from '../utils';
 
 const UNITS = [
@@ -14,7 +12,7 @@ function UnitSwitch({ currentUnits, setCurrentUnits }) {
     <>
       <p>Select units</p>
       {UNITS.map(({ id, value, name }) => (
-        <div>
+        <div key={id}>
           <input
             type="radio"
             id={id}
@@ -23,7 +21,7 @@ function UnitSwitch({ currentUnits, setCurrentUnits }) {
             checked={currentUnits === value}
             onChange={event => setCurrentUnits(event.target.value)}
           />
-          <label For={id}>˚{name}</label>
+          <label htmlFor={id}>˚{name}</label>
         </div>
       ))}
     </>

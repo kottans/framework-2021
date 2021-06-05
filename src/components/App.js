@@ -1,6 +1,4 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment } from '../framework';
+import React from 'react';
 import { useWeather } from '../customHooks';
 import { AppContext } from '../context';
 import SearchByCity from './SearchByCity';
@@ -11,7 +9,7 @@ function App() {
 
   return (
     <>
-      <SearchByCity value={currentCity} onChange={setCurrentCity} />
+      <SearchByCity value={currentCity} onBlur={setCurrentCity} />
       <AppContext.Provider value={weatherData}>
         {!currentCity ? (
           <div>Search by city name</div>

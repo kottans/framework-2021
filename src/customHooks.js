@@ -1,4 +1,4 @@
-import { useEffect, useState } from './framework';
+import { useEffect, useState } from 'react';
 import { loadOpenWeatherMapData } from './data/openWeatherMapAPI';
 import { getWeatherForToday, getWeatherForecast } from './data/weatherData';
 
@@ -9,6 +9,7 @@ export const useWeather = () => {
   const [weatherData, setWeatherData] = useState({});
 
   useEffect(() => {
+    setIsLoading(true);
     if (currentCity) {
       loadOpenWeatherMapData(currentCity)
         .then(data => {

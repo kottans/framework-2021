@@ -1,6 +1,4 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment } from '../framework';
+import React from 'react';
 import { useAppContext, useUnitsContext } from '../context';
 import { getAdaptedWeatherData } from '../data/openWeatherMapAPI';
 import WeatherForecastItem from './WeatherForecastItem';
@@ -15,6 +13,7 @@ function WeatherForecast() {
       <div>Weather forecast for {currentCity}:</div>
       {forecast.map(item => (
         <WeatherForecastItem
+          key={item.dt}
           {...getAdaptedWeatherData(item, currentUnits)}
           shouldShowDate={true}
           shouldShowTime={true}

@@ -1,4 +1,5 @@
-import { render } from './framework';
+import React from 'react';
+import { render } from 'react-dom';
 import App from './components/App';
 
 if (module.hot) {
@@ -6,4 +7,4 @@ if (module.hot) {
 }
 
 // pass a component function itself so that `render` could invoke it as needed
-render(App, document.getElementById('app-root'));
+render(<App />, document.getElementById('app-root'));
