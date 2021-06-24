@@ -15,7 +15,7 @@ export const createElement = (tag, props, ...children) => {
   }
   const element = tag === '' ? new DocumentFragment() : document.createElement(tag);
   Object.entries(props || {}).forEach(([name, value]) => {
-    if (name.startsWith('on') && name.toLowerCase() in window) {
+    if (name.startsWith('on') && name.toLowerCase() in window && value !== null) {
       element.addEventListener(
         name.toLowerCase().substr(2),
         /** @type {Function} */
@@ -23,10 +23,13 @@ export const createElement = (tag, props, ...children) => {
       );
     } else {
       try {
-        if (!(element instanceof DocumentFragment)) {
+        if (!(element instanceof DocumentFragment) && value !== null) {
           // Boolean attributes are considered to be true if they're present on the element at all, regardless of their actual value
           // https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute#example
-          if (['disabled', 'checked'].includes(name) && !value) {
+          if (
+            ['disabled', 'checked', 'multiple', 'selected', 'required'].includes(name) &&
+            !value
+          ) {
             element.removeAttribute(name);
           } else if (name.toLowerCase() === 'classname') {
             // We want to treat both strings and arrays in a similar manner
